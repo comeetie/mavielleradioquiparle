@@ -172,7 +172,7 @@ class Playlist:
 			print("playing {} N: {}".format(PLAYLISTS[self.current],self.current))
 			system("volumio stop")
 			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/{}.wav".format(PLAYLISTS[self.current]))		
-			system("addplaylist.js {}".format(PLAYLISTS[self.current]))
+			system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js {}".format(PLAYLISTS[self.current]))
 			system("volumio play &")
 			t0 = time.time()
 			proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
@@ -185,7 +185,7 @@ class Playlist:
 				print("testing play : {}".format(time.time()-t0))
 			if(status[u'status']!="play"):
 				system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/error.wav")		
-				system("addplaylist.js Nova")
+				system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js Nova")
 			else:
 				print("change sucess")
 		
@@ -193,7 +193,7 @@ class Playlist:
 			print("change error")
 			system("volumio stop")
 			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/error.wav")		
-			system("addplaylist.js Nova")
+			system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js Nova")
 
 	
 	if(status[u'status']!="play"):

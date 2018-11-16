@@ -1,5 +1,5 @@
 #! /bin/sh
-cp addplaylist.js /use/local/bin/
+cp addplaylist.js /volumio/app/plugins/system_controller/volumio_command_line_client/commands/
 cp rotary_volume.py /usr/local/bin/
 cp rotary_volume.sh /etc/init.d/
 update-rc.d rotary_volume.sh defaults
@@ -16,6 +16,6 @@ apt-get install pip
 apt-get install -y cron 
 pip install simplejson 
 pip install spotipy
-pip install pico2wav
+apt-get install pico2wav
 (crontab -l ; echo "0 3 * * * /home/volumio/build_playlists.py") | sort - | uniq - | crontab -
 
