@@ -9,13 +9,14 @@ update-rc.d rotary_stations.sh defaults
 cp led.py /usr/local/bin
 cp led.sh /etc/init.d/
 update-rc.d led.sh defaults
-cp startup-serv.sh /etc/init.d/
-update-rc.d startup-serv.sh defaults
-apt-get update
-apt-get install pip 
-apt-get install -y cron 
+sudo cp startup-serv.sh /etc/init.d/
+sudo update-rc.d startup-serv.sh defaults
+sudo apt-get update
+sudo apt-get install python-pip 
+sudo apt-get install -y cron 
 pip install simplejson 
 pip install spotipy
-apt-get install pico2wav
+pip install RPi
+sudp apt-get install pico2wav
 (crontab -l ; echo "0 3 * * * /home/volumio/build_playlists.py") | sort - | uniq - | crontab -
 
