@@ -1,3 +1,3 @@
 #EXTM3U
-#EXTINF:0,FIP REGGAE
+#EXTINF:0 tvg-logo="http://static.radio.fr/images/broadcasts/6f/78/103525/1/c175.png",FIP REGGAE
 http://direct.fipradio.fr/live/fip-webradio6.mp3
