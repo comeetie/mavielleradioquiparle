@@ -38,7 +38,7 @@ GPIO_B = 6
 # this to None.
 GPIO_BUTTON = None
 
-PLAYLISTS=['FranceInter','FranceInfo', 'Nova','fip-reggae','fip-rock','fip-jazz','fip-electro','fip-groove','fip-monde', 'Skyrock','Lavieestbelle-random','ChansonFr-random','Familly']
+PLAYLISTS=['FranceInter','FranceInfo', 'Nova','fip-reggae','fip-rock','fip-jazz', 'Skyrock','Lavieestbelle','ChansonFr','Familly']
 print(PLAYLISTS)
 LAST = time.time()
 print(LAST)
@@ -102,7 +102,7 @@ class RotaryEncoder:
     
     if self.gpioButton:
       GPIO.setup(self.gpioButton, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-      GPIO.add_event_detect(self.gpioButton, GPIO.FALLING, self._buttonCallback, bouncetime=500)
+      GPIO.add_event_detect(self.gpioButton, GPIO.FALLING, self._buttonCallback, bouncetime=1000)
     
     
   def destroy(self):
@@ -159,41 +159,32 @@ class Playlist:
     self.current = (self.current-1) % len(PLAYLISTS)
     print(self.current)
     return self.set_playlist()
-  
+  def parse_status(st):
+    return st
+
   def set_playlist(self):
     try:
         print("change")
-	proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
-	status=json.loads(out)
+	status=parse_status(out)
 	if(status[u'status']=="play"):
 		try:
 			self.old=self.current  
 			print("playing {} N: {}".format(PLAYLISTS[self.current],self.current))
-			system("volumio stop")
-			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/{}.wav".format(PLAYLISTS[self.current]))		
-			system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js {}".format(PLAYLISTS[self.current]))
-			system("volumio play &")
-			t0 = time.time()
-			proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
-			(out, err) = proc.communicate()
-			status=json.loads(out)
-			while(time.time()-t0<18 and status[u'status']!="play"):			
-				proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
-				(out, err) = proc.communicate()
-				status=json.loads(out)	
-				print("testing play : {}".format(time.time()-t0))
-			if(status[u'status']!="play"):
-				system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/error.wav")		
-				system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js Nova")
-			else:
-				print("change sucess")
+			system("mpc stop")
+			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/{}.wav".format(PLAYLISTS[self.current]))	
+			system("mpc clear")	
+			system("mpc load {}".format(PLAYLISTS[self.current]))
+			system("mpc play")
 		
 		except:
 			print("change error")
-			system("volumio stop")
+			system("mpc stop")
 			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/error.wav")		
-			system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplaylist.js Nova")
+			system("mpc clear")	
+			system("mpc load Nova")
+			system("mpc play")
 
 	
 	if(status[u'status']!="play"):

@@ -44,8 +44,8 @@ GPIO_BUTTON = 25
 # greater than zero because if your system is like mine, sound gets
 # completely inaudible _long_ before 0%. If you've got a hardware amp or
 # serious speakers or something, your results will vary.
-VOLUME_MIN = 15
-VOLUME_MAX = 60
+VOLUME_MIN = 5
+VOLUME_MAX = 90
 
 # The amount you want one click of the knob to increase or decrease the
 # volume. I don't think that non-integer values work here, but you're welcome
@@ -182,14 +182,17 @@ class Volume:
     self._sync()
     v = self.volume + delta
     return self.set_volume(v)
-  
+  def parse_status(st):
+    return st
+  def parse_volume(st):
+    return int(st)
   def set_volume(self, v):
     """
     Sets volume to a specific value.
     """
     self.volume = self._constrain(v)
-    print("volumio volume {}".format(v))
-    system("volumio volume {}".format(v))
+    print("mpc volume {}".format(v))
+    system("mpc volume {}".format(v))
     # self._sync(output)
     return self.volume
     
@@ -197,16 +200,16 @@ class Volume:
     """
     Toggles muting between on and off.
     """
-    proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
-    status=json.loads(out)
-    if(status[u'uri']=="" and status[u'status']=="stop"):
+    status=parse_status(out)
+    if(status[u'current']=="" and status[u'status']=="stop"):
 	print("Empty playlist loading fi")
 	system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/hello.wav")
-	system("/volumio/app/plugins/system_controller/volumio_command_line_client/commands/addplay.js FranceInter")
-	system("volumio play")
+	system("mpc load FranceInter")
+	system("mpc play")
     else:
-	system("volumio toggle")
+	system("mpc toggle")
 	print("toogling")
   
   # Read mpc to get the system volume and mute state.
@@ -215,10 +218,10 @@ class Volume:
   # click of the knob in either direction, which is why we're doing simple
   # string scanning and not regular expressions.
   def _sync(self, output=None):
-    proc = subprocess.Popen(["volumio volume"], stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(["mpc volume"], stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     try:
-      vol_int = int(out)
+      vol_int = parse_vol(out)
     except:
       vol_int = self.MIN
     print "mpc volume:",vol_int

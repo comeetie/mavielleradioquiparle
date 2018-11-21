@@ -13,12 +13,15 @@ def setup():
 	GPIO.setup(LedPin2, GPIO.OUT)   # Set LedPin's mode is output
 	GPIO.output(LedPin2, GPIO.HIGH) # Set LedPin high(+3.3V) to off led
 
+def parse_status(st)
+	return st
+
 def loop():
 	while True:
 		try:
-			proc = subprocess.Popen(["volumio status"], stdout=subprocess.PIPE, shell=True)
+			proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
 			(out, err) = proc.communicate()
-			status=json.loads(out)
+			status=parse_status(out)
 			if(status[u'status']=="play"):
 				GPIO.output(LedPin, GPIO.HIGH)  # led on
 				GPIO.output(LedPin2, GPIO.LOW)  # led on
