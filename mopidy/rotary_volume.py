@@ -182,10 +182,8 @@ class Volume:
     self._sync()
     v = self.volume + delta
     return self.set_volume(v)
-  def parse_status(st):
-    return st
-  def parse_volume(st):
-    return int(st)
+
+
   def set_volume(self, v):
     """
     Sets volume to a specific value.
@@ -195,19 +193,39 @@ class Volume:
     system("mpc volume {}".format(v))
     # self._sync(output)
     return self.volume
+
+  def parse_status(self,out):
+    lines = out.split("\n")
+    res = {}
+    if len(lines) > 2 :
+      res["status"]=lines[1].split("#")[0].replace(" ","")[1:-1]
+      res["track"]=lines[0]
+      sl = lines[2]
+    else:
+      res["status"]="stop"
+      res["track"]=""
+      sl = lines[0]
+    st = sl.split("   ")
+    res["volume"]=int(st[0].split(":")[1][:-1])
+    return res
     
   def toggle(self):
     """
     Toggles muting between on and off.
     """
-    proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(["mpc"], stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
-    status=parse_status(out)
-    if(status[u'current']=="" and status[u'status']=="stop"):
-	print("Empty playlist loading fi")
-	system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/hello.wav")
-	system("mpc load FranceInter")
+    status=self.parse_status(out)
+    if(status[u'status']=="stop"):
 	system("mpc play")
+        proc = subprocess.Popen(["mpc"], stdout=subprocess.PIPE, shell=True)
+        (out, err) = proc.communicate()
+        status=self.parse_status(out)
+	if(status[u'status']=="stop"):
+	   print("Empty playlist loading fi")
+	   system("aplay /home/pi/mavielleradioquiparle/mopidy/sounds/hello.wav")
+	   system("mpc load FranceInter")
+	   system("mpc play")
     else:
 	system("mpc toggle")
 	print("toogling")
@@ -218,10 +236,12 @@ class Volume:
   # click of the knob in either direction, which is why we're doing simple
   # string scanning and not regular expressions.
   def _sync(self, output=None):
-    proc = subprocess.Popen(["mpc volume"], stdout=subprocess.PIPE, shell=True)
+    proc = subprocess.Popen(["mpc"], stdout=subprocess.PIPE, shell=True)
     (out, err) = proc.communicate()
     try:
-      vol_int = parse_vol(out)
+      st = self.parse_status(out)
+      vol_int = st["volume"]
+      print(st)
     except:
       vol_int = self.MIN
     print "mpc volume:",vol_int
@@ -266,7 +286,6 @@ if __name__ == "__main__":
       handle_delta(delta)
   
   def handle_delta(delta):
-    
     if delta == 1:
       vol = v.up()
     else:

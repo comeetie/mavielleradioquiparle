@@ -38,7 +38,7 @@ GPIO_B = 6
 # this to None.
 GPIO_BUTTON = None
 
-PLAYLISTS=['FranceInter','FranceInfo', 'Nova','fip-reggae','fip-rock','fip-jazz', 'Skyrock','Lavieestbelle','ChansonFr','Familly']
+PLAYLISTS=['FranceInter','FranceInfo', 'Nova','fip-reggae','fip-rock','fip-jazz', 'Skyrock','Lavieestbelle','Familly']
 print(PLAYLISTS)
 LAST = time.time()
 print(LAST)
@@ -161,19 +161,35 @@ class Playlist:
     return self.set_playlist()
   def parse_status(st):
     return st
+  
+  def parse_status(self,out):
+    lines = out.split("\n")
+    res = {}
+    if len(lines) > 2 :
+      res["status"]=lines[1].split("#")[0].replace(" ","")[1:-1]
+      res["track"]=lines[0]
+      sl = lines[2]
+    else:
+      res["status"]="stop"
+      res["track"]=""
+      sl = lines[0]
+    st = sl.split("   ")
+    res["volume"]=int(st[0].split(":")[1][:-1])
+    return res
+    
 
   def set_playlist(self):
     try:
         print("change")
 	proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
 	(out, err) = proc.communicate()
-	status=parse_status(out)
-	if(status[u'status']=="play"):
+	status=self.parse_status(out)
+	if(status[u'status']=="playing"):
 		try:
 			self.old=self.current  
 			print("playing {} N: {}".format(PLAYLISTS[self.current],self.current))
 			system("mpc stop")
-			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/{}.wav".format(PLAYLISTS[self.current]))	
+			system("aplay /home/pi/mavielleradioquiparle/mopidy/sounds/{}.wav".format(PLAYLISTS[self.current]))	
 			system("mpc clear")	
 			system("mpc load {}".format(PLAYLISTS[self.current]))
 			system("mpc play")
@@ -181,7 +197,7 @@ class Playlist:
 		except:
 			print("change error")
 			system("mpc stop")
-			system("aplay -Dplughw:IQaudIODAC /home/volumio/sounds/error.wav")		
+			system("aplay /home/pi/mavielleradioquiparle/mopidy/sounds/error.wav")		
 			system("mpc clear")	
 			system("mpc load Nova")
 			system("mpc play")

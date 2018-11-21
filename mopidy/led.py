@@ -13,16 +13,31 @@ def setup():
 	GPIO.setup(LedPin2, GPIO.OUT)   # Set LedPin's mode is output
 	GPIO.output(LedPin2, GPIO.HIGH) # Set LedPin high(+3.3V) to off led
 
-def parse_status(st)
-	return st
+def parse_status(out):
+    	lines = out.split("\n")
+    	res = {}
+    	if len(lines) > 2 :
+      		res["status"]=lines[1].split("#")[0].replace(" ","")[1:-1]
+      		res["track"]=lines[0]
+      		sl = lines[2]
+    	else:
+      		res["status"]="stop"
+      		res["track"]=""
+      		sl = lines[0]
+      	st = sl.split("   ")
+      	res["volume"]=int(st[0].split(":")[1][:-1])
+	return res
 
 def loop():
+	print("loop")
 	while True:
 		try:
-			proc = subprocess.Popen(["mpc status"], stdout=subprocess.PIPE, shell=True)
+			proc = subprocess.Popen(["mpc"], stdout=subprocess.PIPE, shell=True)
+		
 			(out, err) = proc.communicate()
 			status=parse_status(out)
-			if(status[u'status']=="play"):
+			print(status)
+			if(status[u'status']=="playing"):
 				GPIO.output(LedPin, GPIO.HIGH)  # led on
 				GPIO.output(LedPin2, GPIO.LOW)  # led on
 				time.sleep(1)
