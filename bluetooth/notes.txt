@@ -1,0 +1,30 @@
+Config du bluetooth sur raspian
+
+https://www.raspberrypi.org/forums/viewtopic.php?t=235519
+
+Play / pause / next track ...
+
+https://scribles.net/controlling-bluetooth-audio-on-raspberry-pi/
+
+
+Potentiometer MC3008
+http://www.geobib.fr/blog/2016-11-25-potentiometre-raspberry
+
+
+airplay adafruit
+https://learn.adafruit.com/boomy-pi-airplay
+
+Achat --
+
+1 x PowerBoost 1000C
+
+1 x 3.7v 2200mAh Battery
+
+1 x Pimoroni Pico HAT Hacker
+
+1 x Stereo Enclosed Speaker Set
+
+1 x MC3008
+
+
+Cylewet CLW1078 Lot de 12 boutons poussoirs 2 broches 1 A 250 V CA
