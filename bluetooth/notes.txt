@@ -1,5 +1,5 @@
 Config du bluetooth sur raspian
-
+! c'est pour du pulseaudio remplacer config et install pulseaudio par bluealsa
 https://www.raspberrypi.org/forums/viewtopic.php?t=235519
 
 Play / pause / next track ...
@@ -7,24 +7,14 @@ Play / pause / next track ...
 https://scribles.net/controlling-bluetooth-audio-on-raspberry-pi/
 
 
-Potentiometer MC3008
-http://www.geobib.fr/blog/2016-11-25-potentiometre-raspberry
+potentiometer
+adc data sheet http://www.ti.com/lit/ds/symlink/adc0831-n.pdf
+adc wiring https://learn.adafruit.com/reading-a-analog-in-and-controlling-audio-volume-with-the-raspberry-pi/connecting-the-cobbler-to-a-mcp3008
+adc code https://www.heinrichhartmann.com/blog/2014/12/14/sensor-monitoring-with-raspberrypi-and-circonus
 
+wiring 
+!gpio #18, #19 and #21 are used
+pin5=gpio3=snc + grnd (bouton rouge) = power on
+gpio4 + grnd = power (potentiometer switch) off
+adc
 
-airplay adafruit
-https://learn.adafruit.com/boomy-pi-airplay
-
-Achat --
-
-1 x PowerBoost 1000C
-
-1 x 3.7v 2200mAh Battery
-
-1 x Pimoroni Pico HAT Hacker
-
-1 x Stereo Enclosed Speaker Set
-
-1 x MC3008
-
-
-Cylewet CLW1078 Lot de 12 boutons poussoirs 2 broches 1 A 250 V CA
