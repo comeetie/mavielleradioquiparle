@@ -1,0 +1,22 @@
+Quelques liens :
+
+Config du bluetooth sur raspian
+! la config est pour du pulseaudio mais les indication pour le bluetooth sont claire
+ne pas installer pulseaudio et remplacer par bluealsa + service
+https://www.raspberrypi.org/forums/viewtopic.php?t=235519
+
+Play / pause / next track ...
+
+https://scribles.net/controlling-bluetooth-audio-on-raspberry-pi/
+
+Potentiometer MC3008
+http://www.geobib.fr/blog/2016-11-25-potentiometre-raspberry
+
+airplay adafruit
+https://learn.adafruit.com/boomy-pi-airplay
+
+circuit
+! gpio 18,19,21 sont déja pris par le speaker bonnet
+bouton rouge sur scl=gpio3=pin5 + grnd pour le wake up
+interrupteur du potentio sur gpio4 + grnd
+
