@@ -45,3 +45,6 @@ Reste
 
 diode ?
 a regarder 
+a priori 3 gpio +res +3.3 j'ai ce qu'il faut
+ex 23,24,25
+
