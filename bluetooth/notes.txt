@@ -38,13 +38,10 @@ ADC0831 Vin + -> potentiometer (middle)
 ADC0831 Vin - -> GND
 ADC0831 GND -> GND
 
-Reste
-16 +grnd pause/play 
-13 +grnd next
-12 +grnd previous
+pour le moment ---
+diode 4
+bouton rouge 12
+on/off 13
 
-diode ?
-a regarder 
-a priori 3 gpio +res +3.3 j'ai ce qu'il faut
-ex 23,24,25
+
 

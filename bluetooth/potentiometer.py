@@ -10,9 +10,10 @@
 import time
 import os
 import RPi.GPIO as GPIO
+import subprocess
 
 GPIO.setmode(GPIO.BCM)
-
+GPIO.setwarnings(False)
 # change these as desired - they're the pins connected from the
 # SPI port on the ADC to the Cobbler
 PIN_CLK = 11
@@ -48,6 +49,9 @@ def getADC():
         return ad
 
 if __name__ == "__main__":
-        while True:
-                print "ADC: {}".format(getADC())
-                time.sleep(1)
+	while True:
+		val = getADC()
+		print("ADC: {}".format(val/128))
+		vol = "{}%".format(val/128*100)
+		subprocess.call(["amixer","set","PCM",vol])
+		time.sleep(1)
