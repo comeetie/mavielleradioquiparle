@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Analog Input with ADC0831 chip
 #
@@ -51,7 +51,7 @@ def getADC():
 if __name__ == "__main__":
 	while True:
 		val = getADC()
-		print("ADC: {}".format(val/128))
-		vol = "{}%".format(val/128*100)
+		print("ADC: {}".format(1-val/128))
+		vol = "{}%".format(100-val/128*100)
 		subprocess.call(["amixer","set","PCM",vol])
-		time.sleep(1)
+		time.sleep(0.2)

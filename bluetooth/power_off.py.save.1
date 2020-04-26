@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 import RPi.GPIO as GPIO
 import os
 import time
@@ -21,12 +21,10 @@ else:
 while True:
       if(GPIO.input(gpio_pin_number)==0):
          GPIO.wait_for_edge(gpio_pin_number, GPIO.RISING)
+         time.sleep(600)
          print("out")
          GPIO.output(gpio_led, GPIO.LOW) #On l’éteint
-         time.sleep(1)
       else:
          GPIO.wait_for_edge(gpio_pin_number, GPIO.FALLING)
          print("in")
          GPIO.output(gpio_led, GPIO.HIGH) #On l’éteint
-         time.sleep(1)
-

@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import RPi.GPIO as GPIO
 import os
-
+import time
 gpio_pin_number=12
 
 GPIO.setmode(GPIO.BCM)
@@ -13,5 +13,8 @@ def button_callback(channel):
     os.system("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_18_01_F1_4D_CB_15 org.bluez.MediaControl1.Next")
 
 GPIO.add_event_detect(gpio_pin_number,GPIO.RISING,callback=button_callback)
-message = input("Press enter to quit\n\n") # Run until someone presses enter
+while True:
+   time.sleep(1)
+
+
 GPIO.cleanup() # Clean up
